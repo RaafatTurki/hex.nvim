@@ -1,0 +1,20 @@
+{
+  "Lua.workspace.checkThirdParty": false,
+  "diagnostics": {
+    "disable": [
+      "lowercase-global",
+      "trailing-space",
+      "unused-local"
+    ]
+  },
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "workspace": {
+    "library": [
+      "~/.local/share/nvim/lazy/neodev.nvim/types/stable"
+    ],
+    "maxPreload": 5000,
+    "preloadFileSize": 10000
+  }
+}

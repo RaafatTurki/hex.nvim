@@ -8,6 +8,7 @@ M.cfg = {
   assemble_cmd = 'xxd -r',
   binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg' },
   is_binary_file = function(binary_ext)
+    if vim.bo.ft ~= "" then return false end
     if vim.bo.bin then return true end
     local filename = vim.fn.expand('%:t')
     -- local basename = vim.fs.basename(filename)

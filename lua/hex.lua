@@ -42,7 +42,7 @@ M.toggle = function()
   end
 end
 
-local setup_cmds = function()
+local setup_auto_cmds = function()
   vim.api.nvim_create_autocmd({ 'BufReadPre' }, { group = augroup_hex_editor, callback = function()
     if M.cfg.is_binary_file(M.cfg.binary_ext) then
       vim.b.hex = true
@@ -66,10 +66,6 @@ local setup_cmds = function()
       u.finish_patch_from_hex(M.cfg.dump_cmd)
     end
   end })
-
-  vim.api.nvim_create_user_command('HexDump', M.dump, {})
-  vim.api.nvim_create_user_command('HexAssemble', M.assemble, {})
-  vim.api.nvim_create_user_command('HexToggle', M.toggle, {})
 end
 
 M.setup = function(args)
@@ -81,7 +77,11 @@ M.setup = function(args)
   if not u.is_program_on_path(dump_program) then return end
   if not u.is_program_on_path(assemble_program) then return end
 
-  setup_cmds()
+  vim.api.nvim_create_user_command('HexDump', M.dump, {})
+  vim.api.nvim_create_user_command('HexAssemble', M.assemble, {})
+  vim.api.nvim_create_user_command('HexToggle', M.toggle, {})
+
+  setup_auto_cmds()
 end
 
 return M

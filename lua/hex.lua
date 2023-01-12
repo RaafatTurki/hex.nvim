@@ -28,7 +28,7 @@ M.dump = function()
 end
 
 M.assemble = function()
-  if not vim.b.hex then
+  if vim.b.hex then
     u.assemble_from_hex(M.cfg.assemble_cmd)
   else
     vim.notify('already assembled!', vim.log.levels.WARN)

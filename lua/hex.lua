@@ -8,6 +8,7 @@ M.cfg = {
   assemble_cmd = 'xxd -r',
   binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg' },
   is_binary_file = function(binary_ext)
+    if vim.bo.bin then return true end
     local filename = vim.fn.expand('%:t')
     -- local basename = vim.fs.basename(filename)
     local ext = string.match(filename, "%.([^%.]+)$")
@@ -18,7 +19,7 @@ M.cfg = {
 }
 
 M.dump = function()
-  if not vim.bo.bin then
+  if not vim.b.hex then
     u.dump_to_hex(M.cfg.dump_cmd)
   else
     vim.notify('already dumped!', vim.log.levels.WARN)
@@ -26,7 +27,7 @@ M.dump = function()
 end
 
 M.assemble = function()
-  if vim.bo.bin then
+  if not vim.b.hex then
     u.assemble_from_hex(M.cfg.assemble_cmd)
   else
     vim.notify('already assembled!', vim.log.levels.WARN)
@@ -34,7 +35,7 @@ M.assemble = function()
 end
 
 M.toggle = function()
-  if not vim.bo.bin then
+  if not vim.b.hex then
     M.dump()
   else
     M.assemble()
@@ -44,24 +45,24 @@ end
 local setup_cmds = function()
   vim.api.nvim_create_autocmd({ 'BufReadPre' }, { group = augroup_hex_editor, callback = function()
     if M.cfg.is_binary_file(M.cfg.binary_ext) then
-      vim.bo.bin = true
+      vim.b.hex = true
     end
   end })
 
   vim.api.nvim_create_autocmd({ 'BufReadPost' }, { group = augroup_hex_editor, callback = function()
-    if vim.bo.bin then
+    if vim.b.hex then
       u.dump_to_hex(M.cfg.dump_cmd)
     end
   end })
 
   vim.api.nvim_create_autocmd({ 'BufWritePre' }, { group = augroup_hex_editor, callback = function()
-    if vim.bo.bin then
+    if vim.b.hex then
       u.begin_patch_from_hex(M.cfg.assemble_cmd)
     end
   end })
 
   vim.api.nvim_create_autocmd({ 'BufWritePost' }, { group = augroup_hex_editor, callback = function()
-    if vim.bo.bin then
+    if vim.b.hex then
       u.finish_patch_from_hex(M.cfg.dump_cmd)
     end
   end })

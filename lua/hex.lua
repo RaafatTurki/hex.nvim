@@ -72,12 +72,14 @@ local setup_cmds = function()
 end
 
 M.setup = function(args)
-  if (os.execute('command -v xxd') ~= 0) then
-    vim.notify("xxd is not installed on this system, aborting!", vim.log.levels.ERROR)
-    return
-  end
-
   M.cfg = vim.tbl_deep_extend("force", M.cfg, args or {})
+
+  dump_program = vim.fn.split(M.cfg.dump_cmd)[1]
+  assemble_program = vim.fn.split(M.cfg.assemble_cmd)[1]
+
+  if not u.is_program_on_path(dump_program) then return end
+  if not u.is_program_on_path(assemble_program) then return end
+
   setup_cmds()
 end
 

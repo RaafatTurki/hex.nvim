@@ -37,4 +37,14 @@ function M.finish_patch_from_hex(hex_dump_cmd)
   vim.bo.mod = true
 end
 
+function M.is_program_on_path(program)
+  local exit_code = os.execute('which '..program)
+  
+  if (exit_code == 0) then
+    return true
+  end
+  vim.notify(program .. " is not installed on this system, aborting!", vim.log.levels.ERROR)
+  return false
+end
+
 return M

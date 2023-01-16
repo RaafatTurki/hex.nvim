@@ -6,7 +6,7 @@ local M = {}
 M.cfg = {
   dump_cmd = 'xxd -g 1 -u',
   assemble_cmd = 'xxd -r',
-  binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg' },
+  binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg', 'exe', 'dll' },
   is_binary_file = function(binary_ext)
     if vim.bo.ft ~= "" then return false end
     if vim.bo.bin then return true end

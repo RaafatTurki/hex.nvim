@@ -6,15 +6,22 @@ local M = {}
 M.cfg = {
   dump_cmd = 'xxd -g 1 -u',
   assemble_cmd = 'xxd -r',
-  binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg', 'exe', 'dll' },
-  is_binary_file = function(binary_ext)
+  is_file_binary_pre_read = function()
+    binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg', 'exe', 'dll' }
+    -- only work on normal buffers
     if vim.bo.ft ~= "" then return false end
+    -- check -b flag
     if vim.bo.bin then return true end
+    -- check ext within binary_ext
     local filename = vim.fn.expand('%:t')
-    -- local basename = vim.fs.basename(filename)
     local ext = string.match(filename, "%.([^%.]+)$")
-    if ext == nil and not string.match(filename, '%u') then return true end
     if vim.tbl_contains(binary_ext, ext) then return true end
+    -- none of the above
+    return false
+  end,
+  is_file_binary_post_read = function()
+    local encoding = (vim.bo.fenc ~= '' and vim.bo.fenc) or vim.o.enc
+    if encoding ~= 'utf-8' then return true end
     return false
   end,
 }
@@ -45,13 +52,16 @@ end
 
 local setup_auto_cmds = function()
   vim.api.nvim_create_autocmd({ 'BufReadPre' }, { group = augroup_hex_editor, callback = function()
-    if M.cfg.is_binary_file(M.cfg.binary_ext) then
+    if M.cfg.is_file_binary_pre_read() then
       vim.b.hex = true
     end
   end })
 
   vim.api.nvim_create_autocmd({ 'BufReadPost' }, { group = augroup_hex_editor, callback = function()
     if vim.b.hex then
+      u.dump_to_hex(M.cfg.dump_cmd)
+    elseif M.cfg.is_file_binary_post_read() then
+      vim.b.hex = true
       u.dump_to_hex(M.cfg.dump_cmd)
     end
   end })

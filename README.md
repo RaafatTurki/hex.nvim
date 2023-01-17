@@ -48,26 +48,24 @@ require 'hex'.setup {
 
   -- cli command used to assemble from hex data
   assemble_cmd = 'xxd -r',
-
-  -- file extensions treated as binary files (passed to is_binary_file())
-  binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg' },
   
-  -- function that runs on every buffer to determine if it's binary or not
-  is_binary_file = function(binary_ext)
-    local filename = vim.fn.expand('%:t')
-    local ext = string.match(filename, "%.([^%.]+)$")
-    -- file has no ext and no upper case letters
-    if ext == nil and not string.match(filename, '%u') then return true end
-    -- ext is in binary_ext
-    if vim.tbl_contains(binary_ext, ext) then return true end
-    return false
+  -- function that runs on BufReadPre to determine if it's binary or not
+  is_buf_binary_pre_read = function()
+    -- logic that determines if a buffer contains binary data or not
+    -- must return a bool
+  end,
+
+  -- function that runs on BufReadPost to determine if it's binary or not
+  is_buf_binary_post_read = function()
+    -- logic that determines if a buffer contains binary data or not
+    -- must return a bool
   end,
 }
 ```
 
 ## Plans
 - [ ] Implement pagination
-- [ ] Implement auto bin detection
+- [x] Implement auto bin detection
 - [ ] Transform cursor position across views
 - [ ] Create an `xxd` TS parser
 

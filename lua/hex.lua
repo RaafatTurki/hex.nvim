@@ -85,8 +85,8 @@ M.setup = function(args)
   dump_program = vim.fn.split(M.cfg.dump_cmd)[1]
   assemble_program = vim.fn.split(M.cfg.assemble_cmd)[1]
 
-  if not u.is_program_on_path(dump_program) then return end
-  if not u.is_program_on_path(assemble_program) then return end
+  if not u.is_program_executable(dump_program) then return end
+  if not u.is_program_executable(assemble_program) then return end
 
   vim.api.nvim_create_user_command('HexDump', M.dump, {})
   vim.api.nvim_create_user_command('HexAssemble', M.assemble, {})

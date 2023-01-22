@@ -14,7 +14,7 @@ M.cfg = {
     if vim.bo.bin then return true end
     -- check ext within binary_ext
     local filename = vim.fn.expand('%:t')
-    local ext = string.match(filename, "%.([^%.]+)$")
+    local ext = vim.fn.expand('%:e')
     if vim.tbl_contains(binary_ext, ext) then return true end
     -- none of the above
     return false

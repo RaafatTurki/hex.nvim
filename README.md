@@ -1,7 +1,9 @@
 # Hex.nvim
 ![Lua](https://img.shields.io/badge/Made%20with%20Lua-blueviolet.svg?style=for-the-badge&logo=lua)
 
-Hex editing done right
+Hex editing done right.
+
+Shift address lines around, edit and delete bytes, it will all work itself out on `:w`.
 
 ![demo](https://user-images.githubusercontent.com/16624558/211962886-f5e67052-03d8-41c2-844f-720550c935b4.gif)
 

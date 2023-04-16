@@ -13,8 +13,9 @@ function M.dump_to_hex(hex_dump_cmd)
   vim.b.hex_ft = vim.bo.ft
   vim.bo.ft = 'xxd'
   M.drop_undo_history()
-  -- FIXME: this can be problematic
-  vim.cmd [[LspStop]]
+  if vim.lsp.buf.server_ready() then
+    M.dettach_all_lsp_server_from_current_buf()
+  end
   vim.bo.mod = false
 end
 
@@ -43,6 +44,13 @@ function M.is_program_executable(program)
   else
     vim.notify(program .. " is not installed on this system, aborting!", vim.log.levels.WARN)
     return false
+  end
+end
+
+function M.dettach_all_lsp_server_from_current_buf()
+  local attached_servers = vim.lsp.get_active_clients({ bufnr = vim.api.nvim_get_current_buf() })
+  for _, attached_server in ipairs(attached_servers) do
+    attached_server.stop()
   end
 end
 

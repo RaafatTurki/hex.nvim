@@ -9,7 +9,7 @@ end
 
 function M.dump_to_hex(hex_dump_cmd)
   vim.b.hex = true
-  vim.cmd([[%! ]] .. hex_dump_cmd .. " \"" .. vim.fn.expand('%:p') .. "\"")
+  vim.cmd([[%! ]] .. hex_dump_cmd .. " \"" .. vim.fn.fnameescape(vim.fn.expand('%:p')) .. "\"")
   vim.b.hex_ft = vim.bo.ft
   vim.bo.ft = 'xxd'
   M.drop_undo_history()

@@ -13,9 +13,7 @@ function M.dump_to_hex(hex_dump_cmd)
   vim.b.hex_ft = vim.bo.ft
   vim.bo.ft = 'xxd'
   M.drop_undo_history()
-  if vim.lsp.buf.server_ready() then
-    M.dettach_all_lsp_server_from_current_buf()
-  end
+  M.dettach_all_lsp_clients_from_current_buf()
   vim.bo.mod = false
 end
 
@@ -47,7 +45,7 @@ function M.is_program_executable(program)
   end
 end
 
-function M.dettach_all_lsp_server_from_current_buf()
+function M.dettach_all_lsp_clients_from_current_buf()
   local attached_servers = vim.lsp.get_active_clients({ bufnr = vim.api.nvim_get_current_buf() })
   for _, attached_server in ipairs(attached_servers) do
     attached_server.stop()

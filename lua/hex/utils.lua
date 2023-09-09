@@ -8,7 +8,7 @@ function M.drop_undo_history()
 end
 
 function M.dump_to_hex(hex_dump_cmd)
-  vim.b.hex = true
+  vim.b['hex'] = true
   vim.cmd([[%! ]] .. hex_dump_cmd .. " \"" .. vim.fn.expand('%:p') .. "\"")
   vim.b.hex_ft = vim.bo.ft
   vim.bo.ft = 'xxd'
@@ -22,7 +22,7 @@ function M.assemble_from_hex(hex_assemble_cmd)
   vim.bo.ft = vim.b.hex_ft
   M.drop_undo_history()
   vim.bo.mod = false
-  vim.b.hex = false
+  vim.b['hex'] = false
 end
 
 function M.begin_patch_from_hex(hex_assemble_cmd)

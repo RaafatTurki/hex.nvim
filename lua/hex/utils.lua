@@ -8,6 +8,7 @@ function M.drop_undo_history()
 end
 
 function M.dump_to_hex(hex_dump_cmd)
+  vim.bo.bin = true
   vim.b['hex'] = true
   vim.cmd([[%! ]] .. hex_dump_cmd .. " \"" .. vim.fn.expand('%:p') .. "\"")
   vim.b.hex_ft = vim.bo.ft

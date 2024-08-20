@@ -47,7 +47,7 @@ function M.is_program_executable(program)
 end
 
 function M.dettach_all_lsp_clients_from_current_buf()
-  local attached_servers = vim.lsp.get_active_clients({ bufnr = vim.api.nvim_get_current_buf() })
+  local attached_servers = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
   for _, attached_server in ipairs(attached_servers) do
     attached_server.stop()
   end

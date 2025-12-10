@@ -54,19 +54,19 @@ local DEFAULTS = {
     dump   = "xxd -g 1 -u",
     revert = "xxd -r",
   },
+  extensions = {
+    "bin",
+    "dll",
+    "exe",
+    "out",
+  },
   checkbin_pre = function()
-    local binary_ext = {
-      "bin",
-      "dll",
-      "exe",
-      "out",
-    }
     -- only work on normal buffers
     if vim.bo.ft ~= "" then return false end
     -- check -b flag
     if vim.bo.binary then return true end
     local ext = vim.fn.expand("%:e")
-    if vim.tbl_contains(binary_ext, ext) then return true end
+    if vim.tbl_contains(vim.g.hex.extensions, ext) then return true end
     return false
   end,
   checkbin_post = function()

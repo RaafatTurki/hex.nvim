@@ -17,6 +17,7 @@ function M.dump()
     return
   end
   M.hex_dump()
+  render.prettify()
 end
 
 function M.revert()

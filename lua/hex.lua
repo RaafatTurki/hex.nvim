@@ -10,10 +10,13 @@ M.cfg = {
     local binary_ext = { 'out', 'bin', 'png', 'jpg', 'jpeg', 'exe', 'dll' }
     -- only work on normal buffers
     if vim.bo.ft ~= "" then return false end
+    -- check fifo/pipe
+    local filename = vim.fn.expand('%:p')
+    local stat = vim.uv.fs_stat(filename)
+    if stat and stat.type == 'fifo' then return false end
     -- check -b flag
     if vim.bo.bin then return true end
     -- check ext within binary_ext
-    local filename = vim.fn.expand('%:t')
     local ext = vim.fn.expand('%:e')
     if vim.tbl_contains(binary_ext, ext) then return true end
     -- none of the above

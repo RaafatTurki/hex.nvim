@@ -16,6 +16,7 @@ function M.dump_to_hex(hex_dump_cmd)
   M.drop_undo_history()
   M.dettach_all_lsp_clients_from_current_buf()
   vim.bo.mod = false
+  vim.bo.fenc = ''
 end
 
 function M.assemble_from_hex(hex_assemble_cmd)
